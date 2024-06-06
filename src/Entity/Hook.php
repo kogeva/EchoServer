@@ -3,21 +3,34 @@
 namespace App\Entity;
 
 use App\Repository\HookRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: HookRepository::class)]
+#[ORM\Table(name: 'hooks')]
 class Hook
 {
+//    use TimestampableEntity;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
-    #[ORM\Column]
+    #[ORM\Column(name: 'query_params', type: 'json')]
     private array $queryParams = [];
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'json')]
     private array $body = [];
+
+    #[Gedmo\Timestampable(on: 'create')]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    protected \DateTime $created;
+
+    #[Gedmo\Timestampable(on: 'update')]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    protected \DateTime $updated;
 
     public function getId(): ?int
     {
@@ -53,5 +66,25 @@ class Hook
         $this->id = $id;
 
         return $this;
+    }
+
+    public function getCreated(): \DateTime
+    {
+        return $this->created;
+    }
+
+    public function setCreated(\DateTime $created): void
+    {
+        $this->created = $created;
+    }
+
+    public function getUpdated(): \DateTime
+    {
+        return $this->updated;
+    }
+
+    public function setUpdated(\DateTime $updated): void
+    {
+        $this->updated = $updated;
     }
 }

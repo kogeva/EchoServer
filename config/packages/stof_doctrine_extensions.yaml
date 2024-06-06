@@ -1,0 +1,9 @@
+stof_doctrine_extensions:
+  class:
+    timestampable: App\Listener\Doctrine\TimestampableListener
+  default_locale: en_US
+  orm:
+    default:
+      timestampable: true
+#    other:
+#      timestampable: true
